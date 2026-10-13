@@ -38,8 +38,8 @@ class EncounterController extends Controller {
     }
 
     // Display the deletion confirmation page
-    public function delete(string $id) {
+    public function destroy(string $id) {
         // Require confirmation before permanently deleting the encounter
-        return view('encounters.delete', compact('id'));
+        return view('encounters.destroy', compact('id'));
     }
 }
