@@ -1,0 +1,39 @@
+.nav {
+    padding: clamp(10px, 30px, 50px) clamp(20px, 40px, 20px);
+
+    display: flex;
+    justify-content: space-between;
+}
+.nav-brand {
+    font-size: 1.5em;
+    font-weight: bold;
+    text-decoration: none;
+    color: #000;
+}
+.nav__list {
+    display: flex;
+    gap: 20px;
+
+    list-style: none;
+}
+.nav__list-item {
+    text-decoration: none;
+    color: #000;
+}
+
+/* nav {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #555;
+}
+
+.nav-link--active {
+    color: #000;
+    font-weight: 700;
+    text-decoration: underline;
+} */

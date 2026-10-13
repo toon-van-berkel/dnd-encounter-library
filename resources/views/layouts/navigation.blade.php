@@ -1,13 +1,30 @@
-<nav>
-    <x-navlink href="{{ route('home') }}" :active="request()->routeIs('home')">
-        Home
+<nav class="nav">
+    <x-navlink
+        class="nav-brand"
+        href="{{ route('home') }}" 
+        :active="request()->routeIs('home')"
+    >
+        {{ config('app.name') }}
     </x-navlink>
+    
+    <ul class="nav__list">
 
-    <x-navlink href="{{ route('encounters.index') }}" :active="request()->routeIs('encounters.index')">
-        Encounters
-    </x-navlink>
+        <li class="nav__list__item-container">
+            <x-navlink 
+                href="{{ route('encounters.index') }}" 
+                :active="request()->routeIs('encounters.index')"
+            >
+                Encounters
+            </x-navlink>
+        </li>
 
-    <x-navlink href="{{ route('encounters.create') }}" :active="request()->routeIs('encounters.create')">
-        Create encounter
-    </x-navlink>
+        <li class="nav__list__item-container">
+            <x-navlink 
+                href="{{ route('encounters.create') }}" 
+                :active="request()->routeIs('encounters.create')"
+            >
+                Create encounter
+            </x-navlink>
+        </li>
+    </ul>
 </nav>
