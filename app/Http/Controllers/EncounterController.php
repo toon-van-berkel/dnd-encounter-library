@@ -30,7 +30,9 @@ class EncounterController extends Controller {
 
     // Display a specific encounter
     public function show(string $id) {
-        return view('encounters.show', compact('id'));
+        $encounter = Encounter::find($id);
+
+        return view('encounters.show', compact('encounter'));
     }
 
     // Display the form for editing a specific encounter

@@ -1,8 +1,13 @@
 <x-layout
-    title="View encounter {{ $id }}"
-    description="View the details of D&D encounter {{ $id }}."
+    :title="$encounter->title"
+    :description="$encounter->description"
 >
-    <h1>{{ $id }}</h1>
+    <h1>{{ $encounter->title }}</h1>
 
-    <p>Showing encounter {{ $id }}</p>
+    <p>{{ $encounter->description }}</p>
+
+    <p>Type: {{ $encounter->type_id }}</p>
+    <p>Difficulty: {{ $encounter->difficulty_id }}</p>
+    <p>Level: {{ $encounter->min_level }} - {{ $encounter->max_level }}</p>
+    <p>Party size: {{ $encounter->party_size }}</p>
 </x-layout>
