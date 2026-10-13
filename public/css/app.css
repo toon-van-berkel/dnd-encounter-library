@@ -1,0 +1,16 @@
+nav {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #555;
+}
+
+.nav-link--active {
+    color: #000;
+    font-weight: 700;
+    text-decoration: underline;
+}
