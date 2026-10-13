@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<x-layout
+    title="View encounter {{ $id }}"
+    description="View the details of D&D encounter {{ $id }}."
+>
+    <h1>{{ $id }}</h1>
 
-    <title>Showing encounter {{ $id }}</title>
-</head>
-<body>
-    <h1>encounter {{ $id }}</h1>
-</body>
-</html>
+    <p>Showing encounter {{ $id }}</p>
+</x-layout>

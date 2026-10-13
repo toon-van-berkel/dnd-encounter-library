@@ -1,14 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<x-layout
+    title="Encounters"
+    description="Browse D&D encounters created by the community and find inspiration for your next session."
+>
+    <h1>Encounters</h1>
 
-    <title>{{ $pageTitle }}</title>
-</head>
-<body>
-    <h1>{{ $pageTitle }}</h1>
+    <x-encounter-card
+        :id="1"
+        title="Goblin Ambush"
+        type="Combat"
+        difficulty="Medium"
+        creator="Toon"
+    />
 
-    <p>Encounter overview</p>
-</body>
-</html>
+    <x-encounter-card
+        :id="2"
+        title="Haunted Tavern"
+        type="Social"
+        difficulty="Hard"
+        creator="Dungeon Master"
+    />
+</x-layout>

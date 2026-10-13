@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Create an encounter</title>
-</head>
-<body>
+<x-layout
+    title="Create encounter"
+    description="Create and share a new D&D encounter with the community."
+>
     <h1>Create an encounter</h1>
-</body>
-</html>
+</x-layout>
