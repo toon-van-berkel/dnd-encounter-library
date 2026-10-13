@@ -1,0 +1,45 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class EncounterController extends Controller {
+    // Display a list of all encounters
+    public function index() {
+        $pageTitle = 'Encounters';
+
+        return view('encounters.index', compact('pageTitle'));
+    }
+
+    // Display the form for creating a new encounter
+    public function create() {
+        return view('encounters.create');
+    }
+
+    // Store a newly created encounter
+    public function store(Request $request) {
+        //
+    }
+
+    // Display a specific encounter
+    public function show(string $id) {
+        return view('encounters.show', compact('id'));
+    }
+
+    // Display the form for editing a specific encounter
+    public function edit(string $id) {
+        return view('encounters.edit', compact('id'));
+    }
+
+    // Update an existing encounter
+    public function update(Request $request, string $id) {
+        //
+    }
+
+    // Display the deletion confirmation page
+    public function delete(string $id) {
+        // Require confirmation before permanently deleting the encounter
+        return view('encounters.delete', compact('id'));
+    }
+}
