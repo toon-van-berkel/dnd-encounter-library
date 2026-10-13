@@ -3,13 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Encounter;
 
 class EncounterController extends Controller {
     // Display a list of all encounters
     public function index() {
         $pageTitle = 'Encounters';
 
-        return view('encounters.index', compact('pageTitle'));
+        $encounters = Encounter::all();
+
+        return view('encounters.index', compact(
+            'pageTitle',
+            'encounters'
+        ));
     }
 
     // Display the form for creating a new encounter
