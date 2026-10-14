@@ -8,4 +8,8 @@ class EncounterDifficulty extends Model {
     protected $fillable = [
         'name',
     ];
+
+    public function encounters(): HasMany {
+        return $this->hasMany(Encounter::class, 'difficulty_id');
+    }
 }
