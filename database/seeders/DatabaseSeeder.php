@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\EncounterDifficulty;
+use App\Models\EncounterType;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,10 +17,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        EncounterType::upsert([
+            ['name' => 'Combat'],
+            ['name' => 'Social'],
+            ['name' => 'Exploration'],
+            ['name' => 'Puzzle'],
+        ], ['name']);
+
+        EncounterDifficulty::upsert([
+            ['name' => 'Easy'],
+            ['name' => 'Medium'],
+            ['name' => 'Hard'],
+            ['name' => 'Deadly'],
+        ], ['name']);
 
         User::factory()->create([
-            'name' => 'Test User',
+            'name'  => 'Test User',
             'email' => 'test@example.com',
         ]);
     }
