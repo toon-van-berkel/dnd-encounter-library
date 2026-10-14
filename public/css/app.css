@@ -1,4 +1,6 @@
 @import './layout/nav.css';
+@import './components/form.css';
+@import './components/card.css';
 
 .inter {
     font-family: "Inter", sans-serif;
@@ -12,4 +14,15 @@
     box-sizing: border-box;
 
     font-family: 'inter';
+}
+
+main {
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+@media screen and (max-width: 1300px) {
+    main {
+        padding: 20px;
+    }
 }
