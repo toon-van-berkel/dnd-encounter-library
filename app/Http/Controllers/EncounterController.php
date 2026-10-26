@@ -8,8 +8,7 @@ use App\Models\EncounterType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
-class EncounterController extends Controller
-{
+class EncounterController extends Controller {
     // Display a list of all encounters
     public function index() {
         $pageTitle = 'Encounters';

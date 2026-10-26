@@ -9,11 +9,34 @@ test('login screen can be rendered', function () {
     $response->assertOk();
 });
 
+test('guests see authentication links in the navigation', function () {
+    $response = $this->get(route('home'));
+
+    $response
+        ->assertSee(route('login'))
+        ->assertSee(route('register'))
+        ->assertSee('Log in')
+        ->assertSee('Register')
+        ->assertDontSee('Log out');
+});
+
+test('authenticated users see their name and logout form in the navigation', function () {
+    $user = User::factory()->create(['name' => 'Test Adventurer']);
+
+    $response = $this->actingAs($user)->get(route('home'));
+
+    $response
+        ->assertSee('Test Adventurer')
+        ->assertSee(route('logout'))
+        ->assertSee('Log out')
+        ->assertDontSee('Register');
+});
+
 test('users can authenticate using the login screen', function () {
     $user = User::factory()->create();
 
     $response = $this->post(route('login.store'), [
-        'email' => $user->email,
+        'email'    => $user->email,
         'password' => 'password',
     ]);
 
@@ -28,7 +51,7 @@ test('users can not authenticate with invalid password', function () {
     $user = User::factory()->create();
 
     $response = $this->post(route('login.store'), [
-        'email' => $user->email,
+        'email'    => $user->email,
         'password' => 'wrong-password',
     ]);
 
@@ -41,14 +64,14 @@ test('users with two factor enabled are redirected to two factor challenge', fun
     $this->skipUnlessFortifyHas(Features::twoFactorAuthentication());
 
     Features::twoFactorAuthentication([
-        'confirm' => true,
+        'confirm'         => true,
         'confirmPassword' => true,
     ]);
 
     $user = User::factory()->withTwoFactor()->create();
 
     $response = $this->post(route('login.store'), [
-        'email' => $user->email,
+        'email'    => $user->email,
         'password' => 'password',
     ]);
 
