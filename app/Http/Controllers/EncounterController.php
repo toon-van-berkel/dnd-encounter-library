@@ -6,6 +6,7 @@ use App\Models\Encounter;
 use App\Models\EncounterDifficulty;
 use App\Models\EncounterType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class EncounterController extends Controller
 {
@@ -58,18 +59,24 @@ class EncounterController extends Controller
     }
 
     // Display the form for editing a specific encounter
-    public function edit(string $id) {
-        return view('encounters.edit', compact('id'));
+    public function edit(Encounter $encounter) {
+        Gate::authorize('update', $encounter);
+
+        return view('encounters.edit', ['id' => $encounter->id]);
     }
 
     // Update an existing encounter
-    public function update(Request $request, string $id) {
+    public function update(Request $request, Encounter $encounter) {
+        Gate::authorize('update', $encounter);
+
         //
     }
 
     // Display the deletion confirmation page
-    public function destroy(string $id) {
+    public function destroy(Encounter $encounter) {
+        Gate::authorize('delete', $encounter);
+
         // Require confirmation before permanently deleting the encounter
-        return view('encounters.destroy', compact('id'));
+        return view('encounters.destroy', ['id' => $encounter->id]);
     }
 }
