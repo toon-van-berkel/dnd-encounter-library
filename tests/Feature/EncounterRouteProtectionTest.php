@@ -78,3 +78,29 @@ test('a submitted user id is ignored when creating an encounter', function () {
 
     expect($encounter->user_id)->toBe($user->id);
 });
+
+test('invalid encounter data is rejected when creating an encounter', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->post(route('encounters.store'), [
+        'type_id'       => 999999,
+        'difficulty_id' => 999999,
+        'title'         => '',
+        'description'   => '',
+        'min_level'     => 0,
+        'max_level'     => 21,
+        'party_size'    => 21,
+    ]);
+
+    $response->assertSessionHasErrors([
+        'type_id',
+        'difficulty_id',
+        'title',
+        'description',
+        'min_level',
+        'max_level',
+        'party_size',
+    ]);
+
+    $this->assertDatabaseCount('encounters', 0);
+});
