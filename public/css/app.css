@@ -1,28 +1,38 @@
-@import './layout/nav.css';
-@import './components/form.css';
-@import './components/card.css';
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
-.inter {
-    font-family: "Inter", sans-serif;
-    font-optical-sizing: auto;
-    font-style: normal;
-}
+@import './layout/nav.css';
+
+@import './components/form.css';
+@import './components/breadcrumbs.css';
+@import './components/card.css';
+@import './components/banner.css';
+@import './components/encounter-card.css';
+
+@import './pages/login.css';
+@import './pages/encounters/index.css';
+@import './pages/encounters/show.css';
 
 * {
     padding: 0;
     margin: 0;
-    box-sizing: border-box;
 
-    font-family: 'inter';
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+}
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
 main {
-    max-width: 1300px;
     margin: 0 auto;
+}
+section {
+    max-width: 1140px;
 }
 
 @media screen and (max-width: 1300px) {
-    main {
+    section {
         padding: 20px;
     }
 }

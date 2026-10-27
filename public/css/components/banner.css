@@ -1,0 +1,81 @@
+.banner {
+    width: 100%;
+    min-height: 400px;
+    padding: clamp(24px, 5vw, 50px);
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+    position: relative;
+    isolation: isolate;
+
+    background-image: url('/dungeons-and-dragons-fighting-skeletons.webp');
+    background-size: cover;
+    background-position: top;
+    background-repeat: no-repeat;
+}
+
+.banner::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.85),
+        transparent
+    );
+    pointer-events: none;
+}
+
+.banner__inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 1140px;
+    margin: 0 auto;
+}
+
+.banner__inner-title,
+.banner__inner-description {
+    width: 50%;
+    color: #ffffff;
+    overflow-wrap: anywhere;
+}
+
+.banner__inner-title {
+    margin: 0 0 16px;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.15;
+}
+
+.banner__inner-description {
+    margin: 0;
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+    .banner__inner-title,
+    .banner__inner-description {
+        width: 75%;
+    }
+}
+
+@media (max-width: 600px) {
+    .banner {
+        min-height: 320px;
+    }
+
+    .banner::after {
+        background: linear-gradient(
+            to right,
+            rgba(0, 0, 0, 0.9),
+            rgba(0, 0, 0, 0.6)
+        );
+    }
+
+    .banner__inner-title,
+    .banner__inner-description {
+        width: 100%;
+    }
+}

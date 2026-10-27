@@ -1,0 +1,103 @@
+.encounter-card {
+    min-width: 0;
+    padding: 28px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+
+    background: #ffffff;
+    border: 1px solid #e2e5e9;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgb(0 0 0 / 4%);
+
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.encounter-card:hover {
+    border-color: #b4c3d8;
+    box-shadow: 0 8px 24px rgb(0 0 0 / 8%);
+}
+
+.encounter-card__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.encounter-card__badge {
+    padding: 5px 10px;
+    color: #2a4c7b;
+    background: #edf2f8;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.encounter-card__badge--difficulty {
+    color: #644b40;
+    background: #f5eee8;
+}
+
+.encounter-card__title {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+.encounter-card__title-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+.encounter-card__title-link:hover {
+    color: #2a4c7b;
+}
+
+.encounter-card__creator {
+    margin: 0 0 4px;
+    color: #626975;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.encounter-card__creator-name {
+    color: #18202c;
+    font-weight: 600;
+}
+
+.encounter-card__link {
+    margin-top: auto;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    color: #2a4c7b;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.encounter-card__link:hover {
+    text-decoration: underline;
+}
+
+.encounter-card__link:focus-visible,
+.encounter-card__title-link:focus-visible {
+    outline: 2px solid #2a4c7b;
+    outline-offset: 4px;
+    border-radius: 2px;
+}
+
+@media (max-width: 600px) {
+    .encounter-card {
+        padding: 24px;
+    }
+}
