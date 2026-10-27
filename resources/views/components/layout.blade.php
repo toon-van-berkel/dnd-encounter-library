@@ -1,6 +1,7 @@
 @props([
     'title',
-    'description'
+    'description',
+    'breadcrumbs' => [],
 ])
 
 <!DOCTYPE html>
@@ -22,6 +23,7 @@
     @include('layouts.navigation')
 
     <main>
+        <x-breadcrumbs :items="$breadcrumbs" />
         {{ $slot }}
     </main>
 </body>
