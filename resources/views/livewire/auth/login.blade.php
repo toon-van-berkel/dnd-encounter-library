@@ -1,58 +1,104 @@
-<x-layout :title="__('Log in')" :description="__('Log in to your account')">
-    <div class="flex flex-col gap-6">
-        <x-auth-header :title="__('Log in to your account')" :description="__('Enter your email and password below to log in')" />
+<x-layout :title="__('Log in')" :description="__('Log in to your account')" :breadcrumbs="[['label' => __('Log in'), 'url' => null]]">
+    <div class="login">
+        <div class="login__container">
+            <header class="login__header">
+                <h1 class="login__title">{{ __('Log in to your account') }}</h1>
+                <p class="login__description">
+                    {{ __('Enter your email and password below to log in') }}
+                </p>
+            </header>
 
-        <!-- Session Status -->
-        <x-auth-session-status class="text-center" :status="session('status')" />
+            @if (session('status'))
+                <p class="login__status" role="status">
+                    {{ session('status') }}
+                </p>
+            @endif
 
+            <form method="POST" action="{{ route('login.store') }}" class="login__form">
+                @csrf
 
-        <form method="POST" action="{{ route('login.store') }}" class="flex flex-col gap-6">
-            @csrf
+                <div class="login__field">
+                    <label for="email" class="login__label">
+                        {{ __('Email address') }}
+                    </label>
 
-            <!-- Email Address -->
-            <flux:input
-                name="email"
-                :label="__('Email address')"
-                :value="old('email')"
-                type="email"
-                required
-                autofocus
-                autocomplete="email"
-                placeholder="email@example.com"
-            />
+                    <input
+                        id="email"
+                        class="login__input"
+                        name="email"
+                        type="email"
+                        value="{{ old('email') }}"
+                        placeholder="email@example.com"
+                        autocomplete="email"
+                        required
+                        autofocus
+                        @error('email')
+                            aria-invalid="true"
+                            aria-describedby="email-error"
+                        @enderror
+                    >
 
-            <!-- Password -->
-            <div class="relative">
-                <flux:input
-                    name="password"
-                    :label="__('Password')"
-                    type="password"
-                    required
-                    autocomplete="current-password"
-                    :placeholder="__('Password')"
-                    viewable
-                />
+                    @error('email')
+                        <p id="email-error" class="login__error">{{ $message }}</p>
+                    @enderror
+                </div>
 
-                @if (Route::has('password.request'))
-                    <flux:link class="absolute top-0 text-sm end-0" :href="route('password.request')" wire:navigate>
-                        {{ __('Forgot your password?') }}
-                    </flux:link>
-                @endif
-            </div>
+                <div class="login__field">
+                    <label for="password" class="login__label">
+                        {{ __('Password') }}
+                    </label>
 
-            <!-- Remember Me -->
-            <flux:checkbox name="remember" :label="__('Remember me')" :checked="old('remember')" />
+                    <input
+                        id="password"
+                        class="login__input"
+                        name="password"
+                        type="password"
+                        placeholder="{{ __('Password') }}"
+                        autocomplete="current-password"
+                        required
+                        @error('password')
+                            aria-invalid="true"
+                            aria-describedby="password-error"
+                        @enderror
+                    >
 
-            <div class="flex items-center justify-end">
-                <flux:button variant="primary" type="submit" class="w-full" data-test="login-button">
+                    @error('password')
+                        <p id="password-error" class="login__error">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="login__options">
+                    <label class="login__remember">
+                        <input
+                            class="login__checkbox"
+                            type="checkbox"
+                            name="remember"
+                            value="1"
+                            @checked(old('remember'))
+                        >
+                        <span>{{ __('Remember me') }}</span>
+                    </label>
+
+                    @if (Route::has('password.request'))
+                        <a class="login__link" href="{{ route('password.request') }}">
+                            {{ __('Forgot your password?') }}
+                        </a>
+                    @endif
+                </div>
+
+                <button type="submit" class="login__submit" data-test="login-button">
                     {{ __('Log in') }}
-                </flux:button>
-            </div>
-        </form>
+                </button>
+            </form>
 
-        <div class="space-x-1 text-sm text-center rtl:space-x-reverse text-zinc-600 dark:text-zinc-400">
-            <span>{{ __('Don\'t have an account?') }}</span>
-            <flux:link :href="route('register')" wire:navigate>{{ __('Sign up') }}</flux:link>
+            @if (Route::has('register'))
+                <p class="login__register">
+                    <span>{{ __("Don't have an account?") }}</span>
+                    <a class="login__link" href="{{ route('register') }}">
+                        {{ __('Sign up') }}
+                    </a>
+                </p>
+            @endif
         </div>
     </div>
 </x-layout>

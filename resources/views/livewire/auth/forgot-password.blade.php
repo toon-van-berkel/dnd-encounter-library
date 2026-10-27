@@ -1,31 +1,63 @@
-<x-layout :title="__('Forgot password')" :description="__('Reset your password')">
-    <div class="flex flex-col gap-6">
-        <x-auth-header :title="__('Forgot password')" :description="__('Enter your email to receive a password reset link')" />
+<x-layout :title="__('Forgot password')" :description="__('Reset your password')" :breadcrumbs="[['label' => __('Forgot password'), 'url' => null]]">
+    <div class="login">
+        <div class="login__container">
+            <header class="login__header">
+                <h1 class="login__title">{{ __('Forgot password') }}</h1>
+                <p class="login__description">
+                    {{ __('Enter your email to receive a password reset link') }}
+                </p>
+            </header>
 
-        <!-- Session Status -->
-        <x-auth-session-status class="text-center" :status="session('status')" />
+            @if (session('status'))
+                <p class="login__status" role="status">
+                    {{ session('status') }}
+                </p>
+            @endif
 
-        <form method="POST" action="{{ route('password.email') }}" class="flex flex-col gap-6">
-            @csrf
+            <form method="POST" action="{{ route('password.email') }}" class="login__form">
+                @csrf
 
-            <!-- Email Address -->
-            <flux:input
-                name="email"
-                :label="__('Email address')"
-                type="email"
-                required
-                autofocus
-                placeholder="email@example.com"
-            />
+                <div class="login__field">
+                    <label for="email" class="login__label">
+                        {{ __('Email address') }}
+                    </label>
 
-            <flux:button variant="primary" type="submit" class="w-full" data-test="email-password-reset-link-button">
-                {{ __('Email password reset link') }}
-            </flux:button>
-        </form>
+                    <input
+                        id="email"
+                        class="login__input"
+                        name="email"
+                        type="email"
+                        value="{{ old('email') }}"
+                        placeholder="email@example.com"
+                        autocomplete="email"
+                        required
+                        autofocus
+                        @error('email')
+                            aria-invalid="true"
+                            aria-describedby="email-error"
+                        @enderror
+                    >
 
-        <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-400">
-            <span>{{ __('Or, return to') }}</span>
-            <flux:link :href="route('login')" wire:navigate>{{ __('log in') }}</flux:link>
+                    @error('email')
+                        <p id="email-error" class="login__error">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <button
+                    type="submit"
+                    class="login__submit"
+                    data-test="email-password-reset-link-button"
+                >
+                    {{ __('Email password reset link') }}
+                </button>
+            </form>
+
+            <p class="login__register">
+                <span>{{ __('Or, return to') }}</span>
+                <a class="login__link" href="{{ route('login') }}">
+                    {{ __('log in') }}
+                </a>
+            </p>
         </div>
     </div>
 </x-layout>
