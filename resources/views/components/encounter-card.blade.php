@@ -7,13 +7,31 @@
 ])
 
 <article class="encounter-card">
-    <h2>{{ $title }}</h2>
+    <div class="encounter-card__badges">
+        <span class="encounter-card__badge">{{ $type }}</span>
+        <span class="encounter-card__badge encounter-card__badge--difficulty">
+            {{ $difficulty }}
+        </span>
+    </div>
 
-    <p>Type: {{ $type }}</p>
-    <p>Difficulty: {{ $difficulty }}</p>
-    <p>Created by: {{ $creator }}</p>
+    <h2 class="encounter-card__title">
+        <a
+            class="encounter-card__title-link"
+            href="{{ route('encounters.show', $id) }}"
+        >
+            {{ $title }}
+        </a>
+    </h2>
 
-    <a href="{{ route('encounters.show', $id) }}">
-        View encounter
+    <p class="encounter-card__creator">
+        Created by
+        <span class="encounter-card__creator-name">{{ $creator }}</span>
+    </p>
+
+    <a
+        class="encounter-card__link"
+        href="{{ route('encounters.show', $id) }}"
+    >
+        View encounter <span aria-hidden="true">&rarr;</span>
     </a>
 </article>

@@ -12,7 +12,10 @@ class EncounterController extends Controller {
     // Display a list of all encounters
     public function index() {
         $pageTitle = 'Encounters';
-        $encounters = Encounter::all();
+        $encounters = Encounter::query()
+            ->where('is_active', true)
+            ->with(['type', 'difficulty', 'user'])
+            ->get();
 
         return view('encounters.index', compact(
             'pageTitle',
@@ -52,7 +55,9 @@ class EncounterController extends Controller {
 
     // Display a specific encounter
     public function show(string $id) {
-        $encounter = Encounter::findOrFail($id);
+        $encounter = Encounter::query()
+            ->with(['type', 'difficulty', 'user'])
+            ->findOrFail($id);
 
         return view('encounters.show', compact('encounter'));
     }
@@ -60,22 +65,46 @@ class EncounterController extends Controller {
     // Display the form for editing a specific encounter
     public function edit(Encounter $encounter) {
         Gate::authorize('update', $encounter);
+        $types = EncounterType::orderBy('name')->get();
+        $difficulties = EncounterDifficulty::orderBy('id')->get();
 
-        return view('encounters.edit', ['id' => $encounter->id]);
+        return view('encounters.edit', compact(
+            'encounter',
+            'types',
+            'difficulties'
+        ));
     }
 
     // Update an existing encounter
     public function update(Request $request, Encounter $encounter) {
         Gate::authorize('update', $encounter);
 
-        //
+        $validated = $request->validate([
+            'type_id'       => ['required', 'integer', 'exists:encounter_types,id'],
+            'difficulty_id' => ['required', 'integer', 'exists:encounter_difficulties,id'],
+            'title'         => ['required', 'string', 'max:200'],
+            'description'   => ['required', 'string'],
+            'min_level'     => ['required', 'integer', 'min:1', 'max:20'],
+            'max_level'     => ['required', 'integer', 'min:1', 'max:20', 'gte:min_level'],
+            'party_size'    => ['required', 'integer', 'min:1', 'max:20'],
+            'image_path'    => ['nullable', 'url', 'max:255'],
+        ]);
+
+        $encounter->update($validated);
+
+        return redirect()
+            ->route('encounters.show', $encounter)
+            ->with('success', 'Encounter updated successfully.');
     }
 
-    // Display the deletion confirmation page
+    // Delete an encounter
     public function destroy(Encounter $encounter) {
         Gate::authorize('delete', $encounter);
 
-        // Require confirmation before permanently deleting the encounter
-        return view('encounters.destroy', ['id' => $encounter->id]);
+        $encounter->delete();
+
+        return redirect()
+            ->route('encounters.index')
+            ->with('success', 'Encounter deleted successfully.');
     }
 }
