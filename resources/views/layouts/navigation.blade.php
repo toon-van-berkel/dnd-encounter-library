@@ -28,6 +28,30 @@
             </x-navlink>
         </li>
 
+        @auth
+            <li class="nav__list-item">
+                <x-navlink
+                    class="nav__link"
+                    href="{{ route('dashboard') }}"
+                    :active="request()->routeIs('dashboard')"
+                >
+                    Dashboard
+                </x-navlink>
+            </li>
+        @endauth
+
+        @can('access-admin')
+            <li class="nav__list-item">
+                <x-navlink
+                    class="nav__link"
+                    href="{{ route('admin.index') }}"
+                    :active="request()->routeIs('admin.*')"
+                >
+                    Admin
+                </x-navlink>
+            </li>
+        @endcan
+
         @guest
             <li class="nav__list-item">
                 <x-navlink

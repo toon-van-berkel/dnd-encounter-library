@@ -1,12 +1,20 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EncounterController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome')->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::view('dashboard', 'dashboard')->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+});
+
+Route::middleware(['auth', 'can:access-admin'])->group(function () {
+    Route::get('admin', [AdminController::class, 'index'])->name('admin.index');
+    Route::post('admin/encounters/{encounter}/toggle-status', [AdminController::class, 'toggleStatus'])
+        ->name('admin.encounters.toggle-status');
 });
 
 Route::middleware('auth')->group(function () {
