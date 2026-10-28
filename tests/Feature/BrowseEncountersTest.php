@@ -19,6 +19,20 @@ function browseEncounterPayload(User $user, EncounterType $type, EncounterDiffic
     ];
 }
 
+test('encounter cards show an image when an image URL is available', function () {
+    $user = User::factory()->create();
+    $type = EncounterType::create(['name' => 'Combat']);
+    $difficulty = EncounterDifficulty::create(['name' => 'Easy']);
+    $encounter = Encounter::create(array_merge(
+        browseEncounterPayload($user, $type, $difficulty),
+        ['image_path' => 'https://example.com/goblin.jpg']
+    ));
+
+    $this->get(route('encounters.index'))
+        ->assertSee('https://example.com/goblin.jpg')
+        ->assertSee('Illustration for '.$encounter->title);
+});
+
 test('guests can browse active encounters with related names and detail links', function () {
     $user = User::factory()->create(['name' => 'Dungeon Master']);
     $type = EncounterType::create(['name' => 'Combat']);

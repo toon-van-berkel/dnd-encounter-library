@@ -5,6 +5,14 @@
 >
     <article class="encounter">
         <header class="encounter__header">
+            @if ($encounter->image_path)
+                <img
+                    class="encounter__image"
+                    src="{{ $encounter->image_path }}"
+                    alt="Illustration for {{ $encounter->title }}"
+                >
+            @endif
+
             <div class="encounter__badges">
                 <span class="encounter__badge">
                     {{ $encounter->type->name }}

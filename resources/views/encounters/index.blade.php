@@ -20,6 +20,7 @@
                         :type="$encounter->type->name"
                         :difficulty="$encounter->difficulty->name"
                         :creator="$encounter->user->name"
+                        :image="$encounter->image_path"
                     />
                 @empty
                     <p class="encounters__empty">

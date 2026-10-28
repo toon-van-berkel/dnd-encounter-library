@@ -32,6 +32,15 @@ test('guests can view encounter details', function () {
         ->assertSee('Alex Dungeonmaster');
 });
 
+test('encounter details show an image when an image URL is available', function () {
+    $encounter = detailEncounter(User::factory()->create());
+    $encounter->update(['image_path' => 'https://example.com/watchtower.jpg']);
+
+    $this->get(route('encounters.show', $encounter))
+        ->assertSee('https://example.com/watchtower.jpg')
+        ->assertSee('Illustration for '.$encounter->title);
+});
+
 test('an unknown encounter returns not found', function () {
     $this->get(route('encounters.show', 999999))->assertNotFound();
 });

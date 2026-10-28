@@ -11,6 +11,8 @@
 @import './pages/login.css';
 @import './pages/encounters/index.css';
 @import './pages/encounters/show.css';
+@import "./pages/dashboard.css";
+@import "./pages/admin.css";
 
 * {
     padding: 0;

@@ -20,6 +20,13 @@
     box-shadow: 0 8px 24px rgb(0 0 0 / 8%);
 }
 
+.encounter-card__image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
 .encounter-card__badges {
     display: flex;
     flex-wrap: wrap;
@@ -28,9 +35,11 @@
 
 .encounter-card__badge {
     padding: 5px 10px;
+
     color: #2a4c7b;
     background: #edf2f8;
     border-radius: 6px;
+
     font-size: 0.75rem;
     font-weight: 600;
     line-height: 1.4;
@@ -40,6 +49,16 @@
 .encounter-card__badge--difficulty {
     color: #644b40;
     background: #f5eee8;
+}
+
+.encounter-card__badge--active {
+    color: #166534;
+    background: #dcfce7;
+}
+
+.encounter-card__badge--inactive {
+    color: #626975;
+    background: #f0f1f3;
 }
 
 .encounter-card__title {
@@ -72,9 +91,17 @@
     font-weight: 600;
 }
 
-.encounter-card__link {
+.encounter-card__actions {
+    width: 100%;
     margin-top: auto;
 
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.encounter-card__link {
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -89,9 +116,32 @@
     text-decoration: underline;
 }
 
+.encounter-card__delete-form {
+    margin: 0;
+}
+
+.encounter-card__delete {
+    padding: 0;
+
+    color: #b91c1c;
+    background: none;
+    border: none;
+
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.encounter-card__delete:hover {
+    text-decoration: underline;
+}
+
 .encounter-card__link:focus-visible,
-.encounter-card__title-link:focus-visible {
-    outline: 2px solid #2a4c7b;
+.encounter-card__title-link:focus-visible,
+.encounter-card__delete:focus-visible {
+    outline: 2px solid currentColor;
     outline-offset: 4px;
     border-radius: 2px;
 }
