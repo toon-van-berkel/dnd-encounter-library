@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Models;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Encounter extends Model {
     protected $fillable = [
@@ -22,10 +23,16 @@ class Encounter extends Model {
     public function user(): BelongsTo {
         return $this->belongsTo(User::class);
     }
+
     public function type(): BelongsTo {
         return $this->belongsTo(EncounterType::class, 'type_id');
     }
+
     public function difficulty(): BelongsTo {
         return $this->belongsTo(EncounterDifficulty::class, 'difficulty_id');
+    }
+
+    public function favorites(): HasMany {
+        return $this->hasMany(Favorite::class);
     }
 }

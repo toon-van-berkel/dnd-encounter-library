@@ -26,6 +26,7 @@ function validationEncounter(User $owner): Encounter {
 
 test('create validation rejects invalid ids, levels, ordering, and party size', function () {
     $user = User::factory()->create();
+    giveFiveFavorites($user);
 
     $response = $this->actingAs($user)->from(route('encounters.create'))->post(
         route('encounters.store'),
@@ -48,11 +49,12 @@ test('create validation rejects invalid ids, levels, ordering, and party size', 
             'party_size',
         ]);
 
-    $this->assertDatabaseCount('encounters', 0);
+    $this->assertDatabaseMissing('encounters', ['title' => 'Validation test encounter']);
 });
 
 test('create validation rejects a maximum level below the minimum level', function () {
     $user = User::factory()->create();
+    giveFiveFavorites($user);
     $payload = array_merge(validationPayload(), [
         'min_level' => 10,
         'max_level' => 5,
@@ -64,11 +66,12 @@ test('create validation rejects a maximum level below the minimum level', functi
         ->assertRedirect(route('encounters.create'))
         ->assertSessionHasErrors(['max_level']);
 
-    $this->assertDatabaseCount('encounters', 0);
+    $this->assertDatabaseMissing('encounters', ['title' => 'Validation test encounter']);
 });
 
 test('create validation retains submitted values after an error', function () {
     $user = User::factory()->create();
+    giveFiveFavorites($user);
     $payload = array_merge(validationPayload(), [
         'title'      => 'Keep this title',
         'min_level'  => 10,

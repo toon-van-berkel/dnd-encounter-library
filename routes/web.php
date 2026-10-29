@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EncounterController;
+use App\Http\Controllers\FavoriteController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome')->name('home');
@@ -18,6 +19,12 @@ Route::middleware(['auth', 'can:access-admin'])->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('favorites', [FavoriteController::class, 'index'])->name('favorites.index');
+    Route::post('encounters/{encounter}/favorite', [FavoriteController::class, 'store'])
+        ->name('encounters.favorite');
+    Route::delete('encounters/{encounter}/favorite', [FavoriteController::class, 'destroy'])
+        ->name('encounters.unfavorite');
+
     Route::resource('encounters', EncounterController::class)
         ->only(['create', 'store', 'edit', 'update', 'destroy']);
 });

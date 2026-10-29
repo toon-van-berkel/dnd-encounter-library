@@ -57,6 +57,21 @@
             <p class="encounter__description">{{ $encounter->description }}</p>
         </section>
 
+        @auth
+            @if ($isFavorited)
+                <form method="POST" action="{{ route('encounters.unfavorite', $encounter) }}">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit">Remove from favorites</button>
+                </form>
+            @else
+                <form method="POST" action="{{ route('encounters.favorite', $encounter) }}">
+                    @csrf
+                    <button type="submit">Add to favorites</button>
+                </form>
+            @endif
+        @endauth
+
         @canany(['update', 'delete'], $encounter)
             <footer class="encounter__actions">
                 @can('update', $encounter)

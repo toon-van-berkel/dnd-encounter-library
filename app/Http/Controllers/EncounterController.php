@@ -9,30 +9,76 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 class EncounterController extends Controller {
+    private const REQUIRED_FAVORITES = 5;
+
     // Display a list of all encounters
-    public function index() {
+    public function index(Request $request) {
         $pageTitle = 'Encounters';
+        $search = trim((string) $request->query('q', ''));
+        $typeId = $request->query('type_id');
+        $difficultyId = $request->query('difficulty_id');
+
         $encounters = Encounter::query()
             ->where('is_active', true)
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where(function ($query) use ($search) {
+                    $query
+                        ->where('title', 'like', "%{$search}%")
+                        ->orWhere('description', 'like', "%{$search}%");
+                });
+            })
+            ->when($typeId !== null && $typeId !== '', function ($query) use ($typeId) {
+                $query->where('type_id', $typeId);
+            })
+            ->when($difficultyId !== null && $difficultyId !== '', function ($query) use ($difficultyId) {
+                $query->where('difficulty_id', $difficultyId);
+            })
             ->with(['type', 'difficulty', 'user'])
             ->get();
 
+        $types = EncounterType::orderBy('name')->get();
+        $difficulties = EncounterDifficulty::orderBy('id')->get();
+
         return view('encounters.index', compact(
             'pageTitle',
-            'encounters'
+            'encounters',
+            'search',
+            'typeId',
+            'difficultyId',
+            'types',
+            'difficulties'
         ));
     }
 
     // Display the form for creating a new encounter
-    public function create() {
+    public function create(Request $request) {
+        $favoriteCount = $request->user()->favorites()->count();
         $types = EncounterType::orderBy('name')->get();
         $difficulties = EncounterDifficulty::orderBy('id')->get();
 
-        return view('encounters.create', compact('types', 'difficulties'));
+        return view('encounters.create', [
+            'types'             => $types,
+            'difficulties'      => $difficulties,
+            'favoriteCount'     => $favoriteCount,
+            'requiredFavorites' => self::REQUIRED_FAVORITES,
+        ]);
     }
 
     // Store a newly created encounter
     public function store(Request $request) {
+        $favoriteCount = $request->user()->favorites()->count();
+
+        if ($favoriteCount < self::REQUIRED_FAVORITES) {
+            return redirect()
+                ->route('encounters.create')
+                ->withErrors([
+                    'favorites' => 'You need at least '.self::REQUIRED_FAVORITES
+                        .' favorites to create an encounter. You currently have '
+                        .$favoriteCount.'.',
+                ])
+                ->with('favoriteCount', $favoriteCount);
+        }
+
         $validated = $request->validate([
             'type_id'       => ['required', 'integer', 'exists:encounter_types,id'],
             'difficulty_id' => ['required', 'integer', 'exists:encounter_difficulties,id'],
@@ -59,7 +105,10 @@ class EncounterController extends Controller {
             ->with(['type', 'difficulty', 'user'])
             ->findOrFail($id);
 
-        return view('encounters.show', compact('encounter'));
+        $isFavorited = auth()->check()
+            && $encounter->favorites()->where('user_id', auth()->id())->exists();
+
+        return view('encounters.show', compact('encounter', 'isFavorited'));
     }
 
     // Display the form for editing a specific encounter

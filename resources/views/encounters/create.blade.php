@@ -3,6 +3,14 @@
     description="Create and share a new D&D encounter with the community."
     :breadcrumbs="[['label' => 'Encounters', 'url' => route('encounters.index')], ['label' => 'Create encounter', 'url' => null]]"
 >
+    @if ($favoriteCount < $requiredFavorites)
+        <h1>You cannot create an encounter yet</h1>
+        <p>
+            You currently have {{ $favoriteCount }} favorites. You need at least
+            {{ $requiredFavorites }} favorites before you can create an encounter.
+        </p>
+        <a href="{{ route('encounters.index') }}">Browse encounters to find favorites</a>
+    @else
     <div class="encounter-create">
         <form class="form" action="{{ route('encounters.store') }}" method="POST">
             @csrf
@@ -177,4 +185,5 @@
             </button>
         </form>
     </div>
+    @endif
 </x-layout>

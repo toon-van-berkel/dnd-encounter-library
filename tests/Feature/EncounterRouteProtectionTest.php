@@ -43,13 +43,17 @@ test('guests are redirected from protected encounter routes', function () {
 });
 
 test('authenticated users can view the encounter form', function () {
-    $this->actingAs(User::factory()->create())
+    $user = User::factory()->create();
+    giveFiveFavorites($user);
+
+    $this->actingAs($user)
         ->get(route('encounters.create'))
         ->assertOk();
 });
 
 test('authenticated users can create an encounter for themselves', function () {
     $user = User::factory()->create();
+    giveFiveFavorites($user);
     $payload = encounterPayload();
 
     $response = $this->actingAs($user)->post(route('encounters.store'), $payload);
@@ -69,6 +73,7 @@ test('authenticated users can create an encounter for themselves', function () {
 
 test('a submitted user id is ignored when creating an encounter', function () {
     $user = User::factory()->create();
+    giveFiveFavorites($user);
     $otherUser = User::factory()->create();
     $payload = array_merge(encounterPayload(), ['user_id' => $otherUser->id]);
 
@@ -81,6 +86,7 @@ test('a submitted user id is ignored when creating an encounter', function () {
 
 test('invalid encounter data is rejected when creating an encounter', function () {
     $user = User::factory()->create();
+    giveFiveFavorites($user);
 
     $response = $this->actingAs($user)->post(route('encounters.store'), [
         'type_id'       => 999999,
@@ -102,5 +108,5 @@ test('invalid encounter data is rejected when creating an encounter', function (
         'party_size',
     ]);
 
-    $this->assertDatabaseCount('encounters', 0);
+    $this->assertDatabaseMissing('encounters', ['title' => 'Goblin Ambush']);
 });

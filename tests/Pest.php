@@ -1,5 +1,9 @@
 <?php
 
+use App\Models\Encounter;
+use App\Models\EncounterDifficulty;
+use App\Models\EncounterType;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -44,7 +48,27 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
-{
+function something() {
     // ..
+}
+
+function giveFiveFavorites(User $user): void {
+    $type = EncounterType::firstOrCreate(['name' => 'Test Combat']);
+    $difficulty = EncounterDifficulty::firstOrCreate(['name' => 'Test Easy']);
+
+    for ($index = 1; $index <= 5; $index++) {
+        $encounter = Encounter::create([
+            'user_id'       => User::factory()->create()->id,
+            'type_id'       => $type->id,
+            'difficulty_id' => $difficulty->id,
+            'title'         => "Favorite prerequisite {$index}",
+            'description'   => 'A prerequisite favorite.',
+            'min_level'     => 1,
+            'max_level'     => 3,
+            'party_size'    => 4,
+            'is_active'     => true,
+        ]);
+
+        $user->favorites()->create(['encounter_id' => $encounter->id]);
+    }
 }

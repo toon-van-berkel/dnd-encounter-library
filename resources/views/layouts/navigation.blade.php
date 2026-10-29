@@ -38,6 +38,16 @@
                     Dashboard
                 </x-navlink>
             </li>
+
+            <li class="nav__list-item">
+                <x-navlink
+                    class="nav__link"
+                    href="{{ route('favorites.index') }}"
+                    :active="request()->routeIs('favorites.*')"
+                >
+                    Favorites
+                </x-navlink>
+            </li>
         @endauth
 
         @can('access-admin')
