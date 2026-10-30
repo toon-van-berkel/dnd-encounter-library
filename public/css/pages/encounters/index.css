@@ -34,6 +34,10 @@
     gap: 24px;
 }
 
+.homepage-section {
+    margin-top: 32px;
+}
+
 .encounters__empty {
     grid-column: 1 / -1;
     margin: 0;
@@ -43,6 +47,35 @@
     border: 1px dashed #cbd0d8;
     border-radius: 12px;
     text-align: center;
+}
+
+.homepage-section__indicators {
+    display: flex;
+    gap: 8px;
+    margin: 0 0 24px;
+    padding: 0;
+    list-style: none;
+}
+
+.homepage-section__link--explore-all {
+    margin-top: 32px;
+}
+
+.homepage-section__indicator {
+    width: 40px;
+    height: 40px;
+
+    display: grid;
+    place-items: center;
+
+    color: #ffffff;
+    background: #b91c1c;
+    border-radius: 6px;
+    font-weight: 700;
+}
+
+.homepage-section__indicator--complete {
+    background: #166534;
 }
 
 @media (max-width: 900px) {

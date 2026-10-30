@@ -1,0 +1,115 @@
+.encounter-filters {
+    display: grid;
+    grid-template-columns: minmax(220px, 2fr) repeat(2, minmax(160px, 1fr)) auto;
+    align-items: end;
+    gap: 16px;
+    margin-top: 28px;
+    padding: 20px;
+
+    background: #ffffff;
+    border: 1px solid #e2e5e9;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgb(0 0 0 / 6%);
+}
+
+.encounter-filters__field {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.encounter-filters__label {
+    color: #18202c;
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.encounter-filters__input,
+.encounter-filters__select {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+
+    font: inherit;
+    line-height: 1.5;
+    color: #18202c;
+    background: #ffffff;
+    border: 1px solid #cbd0d8;
+    border-radius: 8px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.encounter-filters__input:focus,
+.encounter-filters__select:focus {
+    outline: none;
+    border-color: #2a4c7b;
+    box-shadow: 0 0 0 3px rgb(42 76 123 / 15%);
+}
+
+.encounter-filters__actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.encounter-filters__button {
+    min-height: 44px;
+    padding: 10px 18px;
+
+    font: inherit;
+    font-weight: 600;
+    color: #ffffff;
+    background: #2a4c7b;
+    border: 1px solid #2a4c7b;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.encounter-filters__button:hover {
+    background: #1d3659;
+    border-color: #1d3659;
+}
+
+.encounter-filters__button:focus-visible,
+.encounter-filters__reset:focus-visible {
+    outline: 2px solid #2a4c7b;
+    outline-offset: 4px;
+}
+
+.encounter-filters__reset {
+    color: #2a4c7b;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.encounter-filters__reset:hover {
+    color: #1d3659;
+    text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+    .encounter-filters {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .encounter-filters__field--search,
+    .encounter-filters__actions {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 600px) {
+    .encounter-filters {
+        grid-template-columns: 1fr;
+        padding: 16px;
+    }
+
+    .encounter-filters__field--search,
+    .encounter-filters__actions {
+        grid-column: auto;
+    }
+}

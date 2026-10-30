@@ -114,6 +114,10 @@
     overflow-wrap: anywhere;
 }
 
+.encounter__favorite-form {
+    margin-top: 32px;
+}
+
 .encounter__actions {
     display: flex;
     flex-wrap: wrap;

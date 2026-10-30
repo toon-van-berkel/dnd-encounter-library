@@ -26,5 +26,7 @@
         <x-breadcrumbs :items="$breadcrumbs" />
         {{ $slot }}
     </main>
+
+    <x-footer />
 </body>
 </html>

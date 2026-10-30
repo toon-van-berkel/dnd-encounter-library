@@ -51,6 +51,11 @@
     background: #f5eee8;
 }
 
+.encounter-card__badge--favorites {
+    color: #166534;
+    background: #dcfce7;
+}
+
 .encounter-card__badge--active {
     color: #166534;
     background: #dcfce7;

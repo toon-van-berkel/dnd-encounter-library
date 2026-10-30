@@ -5,18 +5,17 @@
     'difficulty',
     'creator',
     'image' => null,
+    'favoritesCount' => 0,
     'status' => null,
 ])
 
 <article class="encounter-card">
-    @if ($image)
-        <img
-            class="encounter-card__image"
-            src="{{ $image }}"
-            alt="Illustration for {{ $title }}"
-            loading="lazy"
-        >
-    @endif
+    <img
+        class="encounter-card__image"
+        src="{{ $image ?: asset('card-place-holder.png') }}"
+        alt="Illustration for {{ $title }}"
+        loading="lazy"
+    >
 
     <div class="encounter-card__badges">
         <span class="encounter-card__badge">
@@ -25,6 +24,10 @@
 
         <span class="encounter-card__badge encounter-card__badge--difficulty">
             {{ $difficulty }}
+        </span>
+
+        <span class="encounter-card__badge encounter-card__badge--favorites">
+            {{ $favoritesCount }} favorites
         </span>
         
     </div>
@@ -41,7 +44,7 @@
     <p class="encounter-card__creator">
         Created by
         <span class="encounter-card__creator-name">
-            {{ $creator }}
+            {{ $creator ?? 'Deleted user' }}
         </span>
     </p>
 

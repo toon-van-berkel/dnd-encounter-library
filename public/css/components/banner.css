@@ -1,6 +1,7 @@
 .banner {
     width: 100%;
     min-height: 400px;
+    margin-bottom: 32px;
     padding: clamp(24px, 5vw, 50px);
     box-sizing: border-box;
 
@@ -52,6 +53,30 @@
     margin: 0;
     font-size: clamp(1rem, 2vw, 1.5rem);
     line-height: 1.6;
+}
+
+.banner__inner-link {
+    display: inline-block;
+    margin-top: 24px;
+    padding: 12px 20px;
+
+    color: #ffffff;
+    background: #2a4c7b;
+    border: 1px solid #2a4c7b;
+    border-radius: 8px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.banner__inner-link:hover {
+    background: #1d3659;
+    border-color: #1d3659;
+}
+
+.banner__inner-link:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 4px;
 }
 
 @media (max-width: 900px) {

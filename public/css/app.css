@@ -7,6 +7,9 @@
 @import './components/card.css';
 @import './components/banner.css';
 @import './components/encounter-card.css';
+@import './components/encounter-filters.css';
+@import './components/encounter-create-blocked.css';
+@import './components/footer.css';
 
 @import './pages/login.css';
 @import './pages/encounters/index.css';

@@ -9,63 +9,63 @@
 
     <ul class="nav__list">
         <li class="nav__list-item">
-            <x-navlink
-                class="nav__link"
-                href="{{ route('encounters.index') }}"
-                :active="request()->routeIs('encounters.index')"
-            >
-                Encounters
-            </x-navlink>
-        </li>
-
-        <li class="nav__list-item">
-            <x-navlink
-                class="nav__link"
-                href="{{ route('encounters.create') }}"
-                :active="request()->routeIs('encounters.create')"
-            >
-                Create encounter
-            </x-navlink>
+            <div class="nav__dropdown">
+                <x-navlink
+                    class="nav__link nav__dropdown-toggle"
+                    href="{{ route('encounters.index') }}"
+                    :active="request()->routeIs('encounters.index')"
+                >
+                    Encounters
+                </x-navlink>
+                <div class="nav__dropdown-menu">
+                    <x-navlink
+                        class="nav__dropdown-link"
+                        href="{{ route('encounters.create') }}"
+                        :active="request()->routeIs('encounters.create')"
+                    >
+                        Create encounter
+                    </x-navlink>
+                </div>
+            </div>
         </li>
 
         @auth
             <li class="nav__list-item">
-                <x-navlink
-                    class="nav__link"
-                    href="{{ route('dashboard') }}"
-                    :active="request()->routeIs('dashboard')"
-                >
-                    Dashboard
-                </x-navlink>
+                <div class="nav__dropdown nav__user-dropdown">
+                    <span class="nav__user nav__dropdown-toggle" tabindex="0">
+                        {{ auth()->user()->name }}
+                    </span>
+                    <div class="nav__dropdown-menu">
+                        <x-navlink
+                            class="nav__dropdown-link"
+                            href="{{ route('dashboard') }}"
+                            :active="request()->routeIs('dashboard')"
+                        >
+                            My encounters
+                        </x-navlink>
+                        <x-navlink
+                            class="nav__dropdown-link"
+                            href="{{ route('favorites.index') }}"
+                            :active="request()->routeIs('favorites.*')"
+                        >
+                            My favorites
+                        </x-navlink>
+                        @can('access-admin')
+                            <x-navlink
+                                class="nav__dropdown-link"
+                                href="{{ route('admin.index') }}"
+                                :active="request()->routeIs('admin.*')"
+                            >
+                                Admin
+                            </x-navlink>
+                        @endcan
+                    </div>
+                </div>
             </li>
-
+        @else
             <li class="nav__list-item">
                 <x-navlink
-                    class="nav__link"
-                    href="{{ route('favorites.index') }}"
-                    :active="request()->routeIs('favorites.*')"
-                >
-                    Favorites
-                </x-navlink>
-            </li>
-        @endauth
-
-        @can('access-admin')
-            <li class="nav__list-item">
-                <x-navlink
-                    class="nav__link"
-                    href="{{ route('admin.index') }}"
-                    :active="request()->routeIs('admin.*')"
-                >
-                    Admin
-                </x-navlink>
-            </li>
-        @endcan
-
-        @guest
-            <li class="nav__list-item">
-                <x-navlink
-                    class="nav__link"
+                    class="nav__button nav__button--primary"
                     href="{{ route('login') }}"
                     :active="request()->routeIs('login')"
                 >
@@ -75,24 +75,22 @@
 
             <li class="nav__list-item">
                 <x-navlink
-                    class="nav__link"
+                    class="nav__button nav__button--secondary"
                     href="{{ route('register') }}"
                     :active="request()->routeIs('register')"
                 >
                     Register
                 </x-navlink>
             </li>
-        @endguest
+        @endauth
 
         @auth
             <li class="nav__list-item">
-                <span class="nav__user">{{ auth()->user()->name }}</span>
-            </li>
-
-            <li class="nav__list-item">
                 <form class="nav__logout-form" method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button class="nav__logout" type="submit">Log out</button>
+                    <button class="nav__logout nav__button nav__button--secondary" type="submit">
+                        Log out
+                    </button>
                 </form>
             </li>
         @endauth
