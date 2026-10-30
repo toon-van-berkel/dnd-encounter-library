@@ -7,8 +7,7 @@ use App\Livewire\Actions\Logout;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
-class DeleteUserForm extends Component
-{
+class DeleteUserForm extends Component {
     use PasswordValidationRules;
 
     public string $password = '';
@@ -16,8 +15,7 @@ class DeleteUserForm extends Component
     /**
      * Delete the currently authenticated user.
      */
-    public function deleteUser(Logout $logout): void
-    {
+    public function deleteUser(Logout $logout): void {
         $this->validate([
             'password' => $this->currentPasswordRules(),
         ]);

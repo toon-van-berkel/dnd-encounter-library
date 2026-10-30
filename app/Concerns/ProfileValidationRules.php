@@ -6,17 +6,15 @@ use App\Models\User;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Validation\Rule;
 
-trait ProfileValidationRules
-{
+trait ProfileValidationRules {
     /**
      * Get the validation rules used to validate user profiles.
      *
      * @return array<string, array<int, ValidationRule|array<mixed>|string>>
      */
-    protected function profileRules(?int $userId = null): array
-    {
+    protected function profileRules(?int $userId = null): array {
         return [
-            'name' => $this->nameRules(),
+            'name'  => $this->nameRules(),
             'email' => $this->emailRules($userId),
         ];
     }
@@ -26,8 +24,7 @@ trait ProfileValidationRules
      *
      * @return array<int, ValidationRule|array<mixed>|string>
      */
-    protected function nameRules(): array
-    {
+    protected function nameRules(): array {
         return ['required', 'string', 'max:255'];
     }
 
@@ -36,8 +33,7 @@ trait ProfileValidationRules
      *
      * @return array<int, ValidationRule|array<mixed>|string>
      */
-    protected function emailRules(?int $userId = null): array
-    {
+    protected function emailRules(?int $userId = null): array {
         return [
             'required',
             'string',

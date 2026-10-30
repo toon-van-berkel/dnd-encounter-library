@@ -9,8 +9,7 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Title('Profile settings')]
-class Profile extends Component
-{
+class Profile extends Component {
     use ProfileValidationRules;
 
     public string $name = '';
@@ -20,8 +19,7 @@ class Profile extends Component
     /**
      * Mount the component.
      */
-    public function mount(): void
-    {
+    public function mount(): void {
         $this->name = Auth::user()->name;
         $this->email = Auth::user()->email;
     }
@@ -29,8 +27,7 @@ class Profile extends Component
     /**
      * Update the profile information for the currently authenticated user.
      */
-    public function updateProfileInformation(): void
-    {
+    public function updateProfileInformation(): void {
         $user = Auth::user();
 
         $validated = $this->validate($this->profileRules($user->id));
