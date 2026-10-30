@@ -112,7 +112,49 @@ test('inactive favorite encounters remain visible on the favorites page', functi
 
     $this->actingAs($user)
         ->get(route('favorites.index'))
-        ->assertSee($encounter->title);
+        ->assertSee('Unavailable encounter')
+        ->assertDontSee($encounter->title);
+});
+
+test('an inaccessible inactive favorite hides encounter details and remains removable', function () {
+    $user = User::factory()->create();
+    $encounter = favoritePageEncounter(User::factory()->create(), 'Protected Inactive Favorite', false);
+    $favorite = $user->favorites()->create(['encounter_id' => $encounter->id]);
+
+    $this->actingAs($user)
+        ->get(route('favorites.index'))
+        ->assertSee('Unavailable encounter')
+        ->assertDontSee($encounter->title)
+        ->assertDontSee('encounter-card__title-link');
+
+    $this->actingAs($user)
+        ->delete(route('encounters.unfavorite', $encounter), ['redirect_to' => 'favorites'])
+        ->assertRedirect(route('favorites.index'));
+
+    $this->assertDatabaseMissing('favorites', ['id' => $favorite->id]);
+    $this->assertModelExists($encounter);
+});
+
+test('owners retain access to inactive favorites', function () {
+    $owner = User::factory()->create();
+    $encounter = favoritePageEncounter($owner, 'Owned Inactive Favorite', false);
+    $owner->favorites()->create(['encounter_id' => $encounter->id]);
+
+    $this->actingAs($owner)
+        ->get(route('favorites.index'))
+        ->assertSee($encounter->title)
+        ->assertSee(route('encounters.show', $encounter));
+});
+
+test('administrators retain access to inactive favorites', function () {
+    $admin = User::factory()->admin()->create();
+    $encounter = favoritePageEncounter(User::factory()->create(), 'Admin Inactive Favorite', false);
+    $admin->favorites()->create(['encounter_id' => $encounter->id]);
+
+    $this->actingAs($admin)
+        ->get(route('favorites.index'))
+        ->assertSee($encounter->title)
+        ->assertSee(route('encounters.show', $encounter));
 });
 
 test('favorites navigation link is visible only to authenticated users', function () {
@@ -122,7 +164,7 @@ test('favorites navigation link is visible only to authenticated users', functio
     $this->actingAs(User::factory()->create())
         ->get(route('home'))
         ->assertSee(route('favorites.index'))
-        ->assertSee('Favorites');
+        ->assertSee('My favorites');
 });
 
 test('favorite removal from the encounter page keeps its existing redirect', function () {

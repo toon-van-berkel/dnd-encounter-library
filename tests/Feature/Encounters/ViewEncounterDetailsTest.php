@@ -32,6 +32,52 @@ test('guests can view encounter details', function () {
         ->assertSee('Alex Dungeonmaster');
 });
 
+test('guests can view active encounter details', function () {
+    $encounter = detailEncounter(User::factory()->create());
+
+    $this->get(route('encounters.show', $encounter))
+        ->assertOk();
+});
+
+test('guests cannot view inactive encounter details', function () {
+    $encounter = detailEncounter(User::factory()->create());
+    $encounter->update(['is_active' => false]);
+
+    $this->get(route('encounters.show', $encounter))
+        ->assertNotFound();
+});
+
+test('normal users cannot view another users inactive encounter details', function () {
+    $encounter = detailEncounter(User::factory()->create());
+    $encounter->update(['is_active' => false]);
+
+    $this->actingAs(User::factory()->create())
+        ->get(route('encounters.show', $encounter))
+        ->assertNotFound();
+});
+
+test('owners can view their own inactive encounter details', function () {
+    $owner = User::factory()->create();
+    $encounter = detailEncounter($owner);
+    $encounter->update(['is_active' => false]);
+
+    $this->actingAs($owner)
+        ->get(route('encounters.show', $encounter))
+        ->assertOk()
+        ->assertSee($encounter->title);
+});
+
+test('administrators can view inactive encounter details without ownership actions', function () {
+    $encounter = detailEncounter(User::factory()->create());
+    $encounter->update(['is_active' => false]);
+
+    $this->actingAs(User::factory()->admin()->create())
+        ->get(route('encounters.show', $encounter))
+        ->assertOk()
+        ->assertSee($encounter->title)
+        ->assertDontSee(route('encounters.edit', $encounter));
+});
+
 test('encounter details show an image when an image URL is available', function () {
     $encounter = detailEncounter(User::factory()->create());
     $encounter->update(['image_path' => 'https://example.com/watchtower.jpg']);
