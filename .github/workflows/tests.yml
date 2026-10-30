@@ -12,6 +12,19 @@ permissions:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      APP_ENV: testing
+      APP_DEBUG: false
+      DB_CONNECTION: sqlite
+      DB_DATABASE: ':memory:'
+      DB_URL: ''
+      CACHE_STORE: array
+      SESSION_DRIVER: array
+      QUEUE_CONNECTION: sync
+      MAIL_MAILER: array
+      BROADCAST_CONNECTION: 'null'
+      COMPOSER_PROCESS_TIMEOUT: 0
 
     steps:
       - name: Checkout code
@@ -23,11 +36,38 @@ jobs:
         uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
         with:
           php-version: '8.4'
+          extensions: sqlite3, pdo_sqlite
           tools: composer:v2
           coverage: none
 
-      - name: Setup Application
-        run: composer setup
+      - name: Prepare environment
+        shell: bash
+        run: cp .env.example .env
 
-      - name: Run CI Checks
-        run: composer ci:check
+      - name: Configure Composer cache
+        id: composer-cache
+        shell: bash
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer downloads
+        uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4.2.0
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-php-8.4-composer-${{ hashFiles('composer.lock') }}
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Prepare Laravel application
+        run: |
+          php artisan config:clear --ansi
+          php artisan key:generate --force --ansi
+
+      - name: Check formatting
+        run: composer lint:check
+
+      - name: Check types
+        run: composer types:check
+
+      - name: Run tests
+        run: php artisan test --ansi
