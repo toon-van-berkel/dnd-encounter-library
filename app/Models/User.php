@@ -54,10 +54,12 @@ class User extends Authenticatable {
             : $initials;
     }
 
+    /** @return HasMany<Encounter, $this> */
     public function encounters(): HasMany {
         return $this->hasMany(Encounter::class);
     }
 
+    /** @return HasMany<Favorite, $this> */
     public function favorites(): HasMany {
         return $this->hasMany(Favorite::class);
     }

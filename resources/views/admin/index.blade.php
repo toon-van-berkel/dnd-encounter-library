@@ -46,7 +46,7 @@
                                 </a>
                             </th>
 
-                            <td>{{ $encounter->user->name }}</td>
+                            <td>{{ $encounter->user?->name ?? 'Deleted user' }}</td>
 
                             <td>
                                 <span @class([

@@ -10,6 +10,7 @@ class EncounterType extends Model {
         'name',
     ];
 
+    /** @return HasMany<Encounter, $this> */
     public function encounters(): HasMany {
         return $this->hasMany(Encounter::class, 'type_id');
     }

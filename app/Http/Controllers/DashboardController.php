@@ -10,6 +10,7 @@ class DashboardController extends Controller {
         $encounters = $request->user()
             ->encounters()
             ->with(['type', 'difficulty'])
+            ->withCount('favorites')
             ->latest()
             ->get();
 

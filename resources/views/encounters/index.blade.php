@@ -11,17 +11,21 @@
                     Discover community encounters and find inspiration for your next session.
                 </p>
 
-                <form method="GET" action="{{ route('encounters.index') }}">
-                    <label for="encounter-search">Search encounters</label>
+                <form class="encounter-filters" method="GET" action="{{ route('encounters.index') }}">
+                    <div class="encounter-filters__field encounter-filters__field--search">
+                        <label class="encounter-filters__label" for="encounter-search">Search encounters</label>
                     <input
+                        class="encounter-filters__input"
                         id="encounter-search"
                         name="q"
                         type="search"
                         value="{{ $search }}"
                     >
+                    </div>
 
-                    <label for="encounter-type">Encounter type</label>
-                    <select id="encounter-type" name="type_id">
+                    <div class="encounter-filters__field">
+                        <label class="encounter-filters__label" for="encounter-type">Encounter type</label>
+                    <select class="encounter-filters__select" id="encounter-type" name="type_id" onchange="this.form.submit()">
                         <option value="">All types</option>
                         @foreach ($types as $type)
                             <option
@@ -32,9 +36,11 @@
                             </option>
                         @endforeach
                     </select>
+                    </div>
 
-                    <label for="encounter-difficulty">Difficulty</label>
-                    <select id="encounter-difficulty" name="difficulty_id">
+                    <div class="encounter-filters__field">
+                        <label class="encounter-filters__label" for="encounter-difficulty">Difficulty</label>
+                    <select class="encounter-filters__select" id="encounter-difficulty" name="difficulty_id" onchange="this.form.submit()">
                         <option value="">All difficulties</option>
                         @foreach ($difficulties as $difficulty)
                             <option
@@ -45,9 +51,12 @@
                             </option>
                         @endforeach
                     </select>
+                    </div>
 
-                    <button type="submit">Search</button>
-                    <a href="{{ route('encounters.index') }}">Reset</a>
+                    <div class="encounter-filters__actions">
+                        <button class="encounter-filters__button" type="submit">Search</button>
+                        <a class="encounter-filters__reset" href="{{ route('encounters.index') }}">Reset</a>
+                    </div>
                 </form>
             </header>
 
@@ -58,8 +67,9 @@
                         :title="$encounter->title"
                         :type="$encounter->type->name"
                         :difficulty="$encounter->difficulty->name"
-                        :creator="$encounter->user->name"
+                        :creator="$encounter->user?->name"
                         :image="$encounter->image_path"
+                        :favorites-count="$encounter->favorites_count"
                     />
                 @empty
                     <p class="encounters__empty">

@@ -11,7 +11,12 @@ class FavoriteController extends Controller {
     public function index(Request $request): View {
         $favorites = $request->user()
             ->favorites()
-            ->with(['encounter.type', 'encounter.difficulty', 'encounter.user'])
+            ->with([
+                'encounter.type',
+                'encounter.difficulty',
+                'encounter.user',
+                'encounter' => fn ($query) => $query->withCount('favorites'),
+            ])
             ->latest()
             ->get();
 

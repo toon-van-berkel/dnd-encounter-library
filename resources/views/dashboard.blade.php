@@ -32,6 +32,7 @@
                     :difficulty="$encounter->difficulty->name"
                     :creator="auth()->user()->name"
                     :image="$encounter->image_path"
+                    :favorites-count="$encounter->favorites_count"
                     :status="(bool) $encounter->is_active"
                 >
                     <x-slot:actions>

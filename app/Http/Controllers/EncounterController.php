@@ -5,14 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Encounter;
 use App\Models\EncounterDifficulty;
 use App\Models\EncounterType;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\View\View;
 
 class EncounterController extends Controller {
     private const REQUIRED_FAVORITES = 5;
 
-    // Display a list of all encounters
-    public function index(Request $request) {
+    public function index(Request $request): View {
         $pageTitle = 'Encounters';
         $search = trim((string) $request->query('q', ''));
         $typeId = $request->query('type_id');
@@ -34,6 +35,7 @@ class EncounterController extends Controller {
                 $query->where('difficulty_id', $difficultyId);
             })
             ->with(['type', 'difficulty', 'user'])
+            ->withCount('favorites')
             ->get();
 
         $types = EncounterType::orderBy('name')->get();
@@ -50,8 +52,7 @@ class EncounterController extends Controller {
         ));
     }
 
-    // Display the form for creating a new encounter
-    public function create(Request $request) {
+    public function create(Request $request): View {
         $favoriteCount = $request->user()->favorites()->count();
         $types = EncounterType::orderBy('name')->get();
         $difficulties = EncounterDifficulty::orderBy('id')->get();
@@ -64,8 +65,7 @@ class EncounterController extends Controller {
         ]);
     }
 
-    // Store a newly created encounter
-    public function store(Request $request) {
+    public function store(Request $request): RedirectResponse {
         $favoriteCount = $request->user()->favorites()->count();
 
         if ($favoriteCount < self::REQUIRED_FAVORITES) {
@@ -99,11 +99,15 @@ class EncounterController extends Controller {
             ->with('success', 'Encounter created successfully.');
     }
 
-    // Display a specific encounter
-    public function show(string $id) {
-        $encounter = Encounter::query()
-            ->with(['type', 'difficulty', 'user'])
-            ->findOrFail($id);
+    public function show(Encounter $encounter): View {
+        $user = auth()->user();
+        $canViewInactiveEncounter = $encounter->is_active
+            || ($user !== null && $user->id === $encounter->user_id)
+            || $user?->isAdmin();
+
+        abort_unless($canViewInactiveEncounter, 404);
+
+        $encounter->load(['type', 'difficulty', 'user']);
 
         $isFavorited = auth()->check()
             && $encounter->favorites()->where('user_id', auth()->id())->exists();
@@ -111,8 +115,7 @@ class EncounterController extends Controller {
         return view('encounters.show', compact('encounter', 'isFavorited'));
     }
 
-    // Display the form for editing a specific encounter
-    public function edit(Encounter $encounter) {
+    public function edit(Encounter $encounter): View {
         Gate::authorize('update', $encounter);
         $types = EncounterType::orderBy('name')->get();
         $difficulties = EncounterDifficulty::orderBy('id')->get();
@@ -124,8 +127,7 @@ class EncounterController extends Controller {
         ));
     }
 
-    // Update an existing encounter
-    public function update(Request $request, Encounter $encounter) {
+    public function update(Request $request, Encounter $encounter): RedirectResponse {
         Gate::authorize('update', $encounter);
 
         $validated = $request->validate([
@@ -146,8 +148,7 @@ class EncounterController extends Controller {
             ->with('success', 'Encounter updated successfully.');
     }
 
-    // Delete an encounter
-    public function destroy(Encounter $encounter) {
+    public function destroy(Encounter $encounter): RedirectResponse {
         Gate::authorize('delete', $encounter);
 
         $encounter->delete();

@@ -28,7 +28,7 @@
             <p class="encounter__creator">
                 Created by
                 <span class="encounter__creator-name">
-                    {{ $encounter->user->name }}
+                    {{ $encounter->user?->name ?? 'Deleted user' }}
                 </span>
             </p>
         </header>
@@ -59,15 +59,19 @@
 
         @auth
             @if ($isFavorited)
-                <form method="POST" action="{{ route('encounters.unfavorite', $encounter) }}">
+                <form class="encounter__favorite-form" method="POST" action="{{ route('encounters.unfavorite', $encounter) }}">
                     @csrf
                     @method('DELETE')
-                    <button type="submit">Remove from favorites</button>
+                    <button class="encounter__button encounter__button--danger" type="submit">
+                        Remove from favorites
+                    </button>
                 </form>
             @else
-                <form method="POST" action="{{ route('encounters.favorite', $encounter) }}">
+                <form class="encounter__favorite-form" method="POST" action="{{ route('encounters.favorite', $encounter) }}">
                     @csrf
-                    <button type="submit">Add to favorites</button>
+                    <button class="encounter__button" type="submit">
+                        Add to favorites
+                    </button>
                 </form>
             @endif
         @endauth

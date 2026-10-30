@@ -10,10 +10,12 @@ class Favorite extends Model {
         'encounter_id',
     ];
 
+    /** @return BelongsTo<User, $this> */
     public function user(): BelongsTo {
         return $this->belongsTo(User::class);
     }
 
+    /** @return BelongsTo<Encounter, $this> */
     public function encounter(): BelongsTo {
         return $this->belongsTo(Encounter::class);
     }

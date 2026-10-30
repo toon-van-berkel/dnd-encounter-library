@@ -20,18 +20,22 @@ class Encounter extends Model {
         'is_active',
     ];
 
+    /** @return BelongsTo<User, $this> */
     public function user(): BelongsTo {
         return $this->belongsTo(User::class);
     }
 
+    /** @return BelongsTo<EncounterType, $this> */
     public function type(): BelongsTo {
         return $this->belongsTo(EncounterType::class, 'type_id');
     }
 
+    /** @return BelongsTo<EncounterDifficulty, $this> */
     public function difficulty(): BelongsTo {
         return $this->belongsTo(EncounterDifficulty::class, 'difficulty_id');
     }
 
+    /** @return HasMany<Favorite, $this> */
     public function favorites(): HasMany {
         return $this->hasMany(Favorite::class);
     }
